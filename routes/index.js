@@ -4,10 +4,12 @@ const Cube = require('../models/cube');
 
 module.exports = (app) => {
 	app.get('/', (req, res) => {
-		getAllCubes((cubes) => {
+        getAllCubes((cubes) => {
+            console.log(cubes)
 			res.render('index', {
 				title: 'Cube workshop',
-				cubes
+                cubes,
+                isEmpty: cubes.length === 0
 			});
 		});
 	});
