@@ -1,17 +1,13 @@
-const { getAllCubes } = require('../controllers/cubes');
-const { getCube } = require('../controllers/database');
+const { getAllCubes , getCube} = require('../controllers/cubes');
 const Cube = require('../models/cube');
 
 module.exports = (app) => {
-	app.get('/', (req, res) => {
-        getAllCubes((cubes) => {
-            console.log(cubes)
+	app.get('/', async (req, res) => {
+		const cubes = await getAllCubes();
 			res.render('index', {
 				title: 'Cube workshop',
-                cubes,
-                isEmpty: cubes.length === 0
+                cubes
 			});
-		});
 	});
 
 	app.get('/about', (req, res) => {
@@ -30,20 +26,25 @@ module.exports = (app) => {
 	app.post('/create', (req, res) => {
 		const { name, description, imageUrl, difficulty } = req.body;
 
-		const cube = new Cube(name, description, imageUrl, difficulty);
+		const cube = new Cube({ name, description, imageUrl, difficulty });
 
-		cube.save(() => {
-			res.redirect('/');
+		cube.save((err) => {
+			if (err) {
+				console.err(err)
+			} else {
+			    res.redirect('/');
+			}
 		});
 	});
 
-	app.get('/details/:id', (req, res) => {
-		getCube(req.params.id, (cube) => {
+	app.get('/details/:id', async (req, res) => {
+
+		const cube = await getCube(req.params.id);
+
 			res.render('details', {
 				title: 'Details',
 				cube
 			});
-		});
 	});
 
 	app.get('*', (req, res) => {

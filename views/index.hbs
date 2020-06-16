@@ -9,19 +9,12 @@
         <input type="submit" value="search">
       </form>
 
-
-
-      {{#if isEmpty}}
       <p id="noCubesFound">NO CUBES WERE FOUND</p>
 
-      {{else}}
 
       {{#each cubes}}
       {{> cube}}
       {{/each}}
-
-      {{/if}}
-      
       
     </main>
 
