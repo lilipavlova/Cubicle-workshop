@@ -7,22 +7,30 @@ const router = express.Router();
 
 const { getCubeWithAccessories } = require('../controllers/cubes');
 const Cube = require('../models/cube');
+const { authAccess , getUserStatus } = require("../controllers/user");
 
-router.get('/edit', (req, res) => {
-	res.render('editCubePage');
-});
 
-router.get('/delete', (req, res) => {
-	res.render('deleteCubePage');
-});
 
-router.get('/create', (req, res) => {
-	res.render('create', {
-		title: 'Create'
+router.get('/edit', authAccess , getUserStatus , (req, res) => {
+	res.render('editCubePage', {
+		isLoggedIn: req.isLoggedIn
 	});
 });
 
-router.post('/create', (req, res) => {
+router.get('/delete', authAccess , getUserStatus , (req, res) => {
+	res.render('deleteCubePage', {
+		isLoggedIn: req.isLoggedIn
+	});
+});
+
+router.get('/create', authAccess , getUserStatus , (req, res) => {
+	res.render('create', {
+		title: 'Create',
+		isLoggedIn: req.isLoggedIn
+	});
+});
+
+router.post('/create' , authAccess , (req, res) => {
 	const { name, description, imageUrl, difficulty } = req.body;
 
 	const token = req.cookies['aid'];
@@ -40,12 +48,13 @@ router.post('/create', (req, res) => {
 	});
 });
 
-router.get('/details/:id', async (req, res) => {
+router.get('/details/:id' , getUserStatus ,  async (req, res) => {
 	const cube = await getCubeWithAccessories(req.params.id);
 
 	res.render('details', {
 		title: 'Details',
-		...cube
+		...cube,
+		isLoggedIn: req.isLoggedIn
 	});
 });
 

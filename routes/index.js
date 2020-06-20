@@ -2,20 +2,22 @@ const express = require("express");
 const router = express.Router();
 
 const { getAllCubes } = require('../controllers/cubes');
+const { getUserStatus } = require('../controllers/user');
 
 
-
-	router.get('/', async (req, res) => {
+	router.get('/', getUserStatus , async (req, res) => {
 		const cubes = await getAllCubes();
 			res.render('index', {
 				title: 'Cube workshop',
-                cubes
+				cubes,
+				isLoggedIn: req.isLoggedIn
 			});
 	});
 
-	router.get('/about', (req, res) => {
+	router.get('/about', getUserStatus ,  (req, res) => {
 		res.render('about', {
-			title: 'About'
+			title: 'About',
+			isLoggedIn: req.isLoggedIn
 		});
 	});
 

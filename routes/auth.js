@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { saveUser , verifyUser } = require("../controllers/user");
+const { saveUser , verifyUser , guestAccess , getUserStatus } = require("../controllers/user");
+
 
 // Registration Routs 
-router.get("/register", (req, res) => {
-    res.render("registerPage");
+router.get("/register", guestAccess , getUserStatus , (req, res) => {
+    res.render("registerPage", {
+        isLoggedIn: req.isLoggedIn
+    });
 });
 
 router.post("/register", async (req, res) => {
@@ -16,11 +19,13 @@ router.post("/register", async (req, res) => {
 });
 
 // Login Routs
-router.get("/login", (req, res) => {
-    res.render("loginPage");
+router.get("/login", guestAccess , getUserStatus , (req, res) => {
+    res.render("loginPage", {
+        
+    });
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login" , async (req, res) => {
     const status = await verifyUser(req, res);
 
     if (status) {
