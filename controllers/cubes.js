@@ -4,10 +4,6 @@ const Cube = require("../models/cube");
 const getAllCubes = async () => {
   const cubes = await Cube.find().lean();
 
-  if (cubes.length === 0) {
-  document.getElementById("noCubesFound").style.display = "block";
-  }
-
   return cubes;
 }
 
