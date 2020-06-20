@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { saveUser } = require("../controllers/user");
+const { saveUser , verifyUser } = require("../controllers/user");
 
-router.get("/login", (req, res) => {
-    res.render("loginPage");
-});
-
+// Registration Routs 
 router.get("/register", (req, res) => {
     res.render("registerPage");
 });
@@ -16,8 +13,20 @@ router.post("/register", async (req, res) => {
     if (status) {
         res.redirect("/")
     };
-})
+});
 
+// Login Routs
+router.get("/login", (req, res) => {
+    res.render("loginPage");
+});
+
+router.post("/login", async (req, res) => {
+    const status = await verifyUser(req, res);
+
+    if (status) {
+        res.redirect("/")
+    } 
+});
 
 
 
