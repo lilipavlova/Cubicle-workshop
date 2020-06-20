@@ -1,11 +1,15 @@
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config')[env];
+
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const privateKey = "cube-workshop";
+
+
 
 const generateToken = (data) => {
-    const token = jwt.sign(data, privateKey);
+    const token = jwt.sign(data, config.privateKey);
     return token;
 }
 

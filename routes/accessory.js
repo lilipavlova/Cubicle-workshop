@@ -6,6 +6,13 @@ const { getAccessories } = require("../controllers/accessories")
 const Accessory = require("../models/accessory");
 
 
+	router.get('/create/accessory', (req, res) => {
+		res.render('createAccessory', {
+			title: "Create accessory"
+		});
+	});
+
+
 	router.post('/create/accessory', async (req, res) => {
 		const { name, description, imageUrl } = req.body;
 		const accessory = new Accessory({ name, description, imageUrl });
