@@ -5,7 +5,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-const { getCubeWithAccessories } = require('../controllers/cubes');
+const { getCubeWithAccessories , editCube } = require('../controllers/cubes');
 const Cube = require('../models/cube');
 const { authAccess , getUserStatus } = require("../controllers/user");
 
@@ -57,5 +57,26 @@ router.get('/details/:id' , getUserStatus ,  async (req, res) => {
 		isLoggedIn: req.isLoggedIn
 	});
 });
+
+router.get('/edit/:id' , getUserStatus ,  async (req, res) => {
+	const cube = await getCubeWithAccessories(req.params.id);
+
+	res.render('editCubePage', {
+		title: 'Edit',
+		...cube,
+		isLoggedIn: req.isLoggedIn
+	});
+});
+
+router.post('/edit/:id', authAccess , async (req, res) => {
+	const { name, description, imageUrl, difficulty } = req.body;
+
+	await editCube(req.params.id,  { name, description, imageUrl, difficulty } );
+		
+	res.redirect(`/details/${req.params.id}`);
+});
+
+
+
 
 module.exports = router;

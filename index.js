@@ -12,7 +12,8 @@ const accessoryRouter = require("./routes/accessory");
 
 mongoose.connect(config.databaseUrl, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 
 }, (err) => {
     if (err) {

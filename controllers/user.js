@@ -88,6 +88,7 @@ const guestAccess = (req, res, next) => {
 const getUserStatus = (req, res, next) => {
     const token = req.cookies['aid'];
 
+
 	if (!token) {
         req.isLoggedIn = false;
 	}
